@@ -2,6 +2,7 @@ package com.profesorp.countriesservice;
 
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,7 +14,7 @@ import com.profesorp.countriesservice.entities.Countries;
 
 @RestController
 public class CountriesServiceController {
-	HashMap<Integer, Integer> timePort=new HashMap<>();
+	private HashMap<Integer, Integer> timePort=new HashMap<>();
 	
 	@Autowired
 	private CountriesRepository countriesRepository;
@@ -24,7 +25,7 @@ public class CountriesServiceController {
 	@GetMapping("/{country}")
 	public Countries getCountry(@PathVariable String country) {
 		Countries  countryBean = countriesRepository.findById(country).orElseThrow(() -> new NotFoundException("Country: "+country+" not found"));
-		int port= Integer.parseInt(environment.getProperty("local.server.port")) ;
+		int port= Integer.parseInt(Objects.requireNonNull(environment.getProperty("local.server.port"))) ;
 		countryBean.setPort(port);
 		int time=timePort.getOrDefault(port, 0);
 		if (time>=0)
@@ -39,7 +40,7 @@ public class CountriesServiceController {
 	}		
 	@GetMapping("/time/{time}")
 	public int getTime(@PathVariable int time) {
-		int port=Integer.parseInt(environment.getProperty("local.server.port")) ;
+		int port=Integer.parseInt(Objects.requireNonNull(environment.getProperty("local.server.port"))) ;
 		timePort.put(port, time);
 		return time;
 	}		

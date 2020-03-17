@@ -20,7 +20,7 @@ public class CapitalsServiceController {
 	
 	@Autowired
 	private CapitalsServiceProxy proxy;
-	HashMap<Integer, Integer> htPuerto=new HashMap<>();	
+	private HashMap<Integer, Integer> htPuerto=new HashMap<>();
 	
 	@GetMapping("/{country}")
 	public CapitalsBean getCountry(@PathVariable String country) {
@@ -47,10 +47,8 @@ public class CapitalsServiceController {
 				"http://localhost:8000/{country}", 
 				CapitalsBean.class, 
 				uriVariables );
-		
-		CapitalsBean response = responseEntity.getBody();
-		
-		return response;
+
+		return responseEntity.getBody();
 	}
 	
 	@Autowired
